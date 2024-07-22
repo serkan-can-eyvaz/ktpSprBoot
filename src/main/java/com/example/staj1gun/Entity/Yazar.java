@@ -2,6 +2,8 @@ package com.example.staj1gun.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Yazar {
     @Id
@@ -13,7 +15,8 @@ public class Yazar {
     @Column(name = "Surname")
     private String surname;
 
-
+    @OneToMany(mappedBy = "yazar")
+    List<Kitap>kitaps;
 
     public Yazar()
     {}

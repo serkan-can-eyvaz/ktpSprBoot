@@ -13,6 +13,9 @@ public class Kitap
     @Column(name = "Title")
     private String title;
 
+    @ManyToOne
+    @JoinColumn(name = "Yazar_id")
+    private Yazar yazar;
     public Kitap() {
     }
 
