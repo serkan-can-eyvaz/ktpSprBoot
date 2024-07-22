@@ -2,9 +2,10 @@ package com.example.staj1gun.Service;
 
 import com.example.staj1gun.DAO.IYazarDAO;
 import com.example.staj1gun.Entity.Yazar;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class YazarService implements IYazarService {
 
     private final IYazarDAO yazarDAO;
