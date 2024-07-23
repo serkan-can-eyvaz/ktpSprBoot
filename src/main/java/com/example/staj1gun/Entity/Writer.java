@@ -5,23 +5,20 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Yazar {
+public class Writer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
-    @Column(name = "Name")
     private String name;
-    @Column(name = "Surname")
     private String surname;
 
-    @OneToMany(mappedBy = "yazar")
-    List<Kitap>kitaps;
+    @OneToMany(mappedBy = "writer")
+    List<Book>books;
 
-    public Yazar()
+    public Writer()
     {}
 
-    public Yazar(int id, String name, String surname) {
+    public Writer(int id, String name, String surname) {
         this.id = id;
         this.name = name;
         this.surname = surname;

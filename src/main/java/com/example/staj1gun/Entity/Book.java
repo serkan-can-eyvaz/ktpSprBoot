@@ -3,23 +3,22 @@ package com.example.staj1gun.Entity;
 import jakarta.persistence.*;
 
 @Entity
-public class Kitap
+public class Book
 {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    @Column(name = "Title")
+    @Column(name = "title")
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "Yazar_id")
-    private Yazar yazar;
-    public Kitap() {
+    @JoinColumn(name = "writer_id")
+    private Writer writer;
+    public Book() {
     }
 
-    public Kitap(int id, String title) {
+    public Book(int id, String title) {
         this.id = id;
         this.title = title;
     }
