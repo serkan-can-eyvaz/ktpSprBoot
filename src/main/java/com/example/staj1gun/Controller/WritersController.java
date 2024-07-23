@@ -1,5 +1,7 @@
 package com.example.staj1gun.Controller;
 
+import com.example.staj1gun.DTO.Request.CreateWriterRequest;
+import com.example.staj1gun.DTO.Response.getAllWriterResponse;
 import com.example.staj1gun.Entity.Writer;
 import com.example.staj1gun.Service.WriterService;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +19,12 @@ public class WritersController {
     }
 
     @GetMapping()
-    public List<Writer> listeleme() {
+    public List<getAllWriterResponse> listeleme() {
        return writerService.getAll();
     }
 
     @PostMapping("/save")
-    public Writer save(@RequestBody Writer yazar) {
-        return writerService.create(yazar);
+    public Writer save(@RequestBody CreateWriterRequest createWriterRequest) {
+        return writerService.create(createWriterRequest);
     }
 }

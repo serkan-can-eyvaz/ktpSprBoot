@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IBookService {
 
-    Book create(Book book);
+    Book create(String title, String writerName, String writerSurname);
 
     List<Book> getAll();
 }

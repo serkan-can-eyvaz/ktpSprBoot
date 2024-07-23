@@ -2,6 +2,8 @@ package com.example.staj1gun.Controller;
 
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Service.BookService;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +24,10 @@ public class BooksController {
     }
 
     @PostMapping()
-    public Book save(@RequestBody Book book) {
+    public Book create(@RequestParam String title,
+                     @RequestParam String writerName,
+                     @RequestParam String writerSurname) {
 
-        return bookService.create(book);
+        return bookService.create(title, writerName, writerSurname);
     }
 }
