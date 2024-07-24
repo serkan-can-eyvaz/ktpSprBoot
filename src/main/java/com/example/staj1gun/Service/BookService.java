@@ -2,50 +2,65 @@ package com.example.staj1gun.Service;
 
 import com.example.staj1gun.DAO.BookRepository;
 import com.example.staj1gun.DAO.WriterRepository;
+import com.example.staj1gun.DTO.Request.CreateBookRequest;
+import com.example.staj1gun.DTO.Response.getAllBookResponse;
+import com.example.staj1gun.DTO.Response.getByIdBookResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Entity.Writer;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService implements IBookService {
 
     private final BookRepository bookRepository;
-    private final WriterRepository writerRepository;
+    private  final WriterRepository writerRepository;
 
     public BookService(BookRepository bookRepository, WriterRepository writerRepository) {
         this.bookRepository = bookRepository;
         this.writerRepository = writerRepository;
     }
 
+
     @Override
-    public Book create(String title, String writerName, String writerSurname) {
-        Writer writer = writerRepository.findByNameAndSurname(writerName, writerSurname);
-
-        if (writer == null) {
-            writer = new Writer();
-            writer.setName(writerName);
-            writer.setSurname(writerSurname);
-            writerRepository.save(writer);
-            System.out.println("Writer saved: " + writer.getId());
-        } else {
-            System.out.println("Writer already exists: " + writer.getId());
-        }
-
+    public Book create(CreateBookRequest createBookRequest) {
+        Optional<Writer> byId = writerRepository.findById(createBookRequest.getWriterId());
+        Writer writer = byId.get();
         Book book = new Book();
-        book.setTitle(title);
-        book.setWriter(writer);
+        book.setWriter(writer);//hibernate iki yönlü ilişkiler
+        book.setTitle(createBookRequest.getTitle());
 
-        System.out.println("Saving book with title: " + title);
-        book = bookRepository.save(book);
-        System.out.println("Book saved with ID: " + book.getId());
-
-        return book;
+        return bookRepository.save(book);
     }
 
     @Override
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<getAllBookResponse> getAll() {
+        List<Book>books = bookRepository.findAll();
+        List<getAllBookResponse> getAllBookResponse = new ArrayList<>();//stream bak
+        for (Book book : books) {
+           getAllBookResponse responseItem = new getAllBookResponse();
+            responseItem.setId(book.getId());
+            responseItem.setTitle(book.getTitle());
+            responseItem.setWriterName(book.getWriterName());
+            responseItem.setWriterSurname(book.getWriterSurname());
+            getAllBookResponse.add(responseItem);
+        }
+        return getAllBookResponse;
+    }
+
+    @Override
+    public getByIdBookResponse  getById(int id) {
+
+        Book book = bookRepository.findById(id).get();
+        getByIdBookResponse responseItem = new getByIdBookResponse();
+        responseItem.setId(book.getId());
+        responseItem.setTitle(book.getTitle());
+        responseItem.setWriterName(book.getWriterName());
+        responseItem.setWriterSurname(book.getWriterSurname());
+        return responseItem;
+
     }
 }

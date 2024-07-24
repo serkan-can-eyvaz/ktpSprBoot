@@ -1,15 +1,16 @@
 package com.example.staj1gun.Controller;
 
+import com.example.staj1gun.DTO.Request.CreateBookRequest;
+import com.example.staj1gun.DTO.Response.getAllBookResponse;
+import com.example.staj1gun.DTO.Response.getByIdBookResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Service.BookService;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/Books")
+@RequestMapping("/books")
 public class BooksController {
 
     private final BookService bookService;
@@ -19,15 +20,19 @@ public class BooksController {
     }
 
     @GetMapping()
-    public List<Book> getAll() {
+    public List<getAllBookResponse> getAll() {
         return bookService.getAll();
     }
 
     @PostMapping()
-    public Book create(@RequestParam String title,
-                     @RequestParam String writerName,
-                     @RequestParam String writerSurname) {
+    public Book addBook(@RequestBody CreateBookRequest createBookRequest) {
+        return bookService.create(createBookRequest);
 
-        return bookService.create(title, writerName, writerSurname);
     }
+
+    @GetMapping("/{id}")
+    public getByIdBookResponse getBook(@PathVariable int id) {
+        return bookService.getById(id);
+    }
+
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Writers")
+@RequestMapping("/writers")
 public class WritersController {
 
     private final WriterService writerService;
@@ -23,7 +23,7 @@ public class WritersController {
        return writerService.getAll();
     }
 
-    @PostMapping("/save")
+    @PostMapping()
     public Writer save(@RequestBody CreateWriterRequest createWriterRequest) {
         return writerService.create(createWriterRequest);
     }
