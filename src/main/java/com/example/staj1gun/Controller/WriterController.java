@@ -10,11 +10,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/writers")
-public class WritersController {
+public class WriterController {
 
     private final WriterService writerService;
 
-    public WritersController(WriterService writerService) {
+    public WriterController(WriterService writerService) {
         this.writerService = writerService;
     }
 

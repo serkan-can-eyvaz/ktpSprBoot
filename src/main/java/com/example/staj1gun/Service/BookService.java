@@ -7,6 +7,7 @@ import com.example.staj1gun.DTO.Response.getAllBookResponse;
 import com.example.staj1gun.DTO.Response.getByIdBookResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Entity.Writer;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,9 +29,13 @@ public class BookService implements IBookService {
     @Override
     public Book create(CreateBookRequest createBookRequest) {
         Optional<Writer> byId = writerRepository.findById(createBookRequest.getWriterId());
+        if (!byId.isPresent()) {
+            //NoSuchElementException boş olması durumda fırlatır
+            throw new EntityNotFoundException("Writer not found with id: " + createBookRequest.getWriterId());
+        }
         Writer writer = byId.get();
         Book book = new Book();
-        book.setWriter(writer);//hibernate iki yönlü ilişkiler
+        book.setWriter(writer);
         book.setTitle(createBookRequest.getTitle());
 
         return bookRepository.save(book);
@@ -39,7 +44,7 @@ public class BookService implements IBookService {
     @Override
     public List<getAllBookResponse> getAll() {
         List<Book>books = bookRepository.findAll();
-        List<getAllBookResponse> getAllBookResponse = new ArrayList<>();//stream bak
+        List<getAllBookResponse> getAllBookResponse = new ArrayList<>();//stream yöntemine bak
         for (Book book : books) {
            getAllBookResponse responseItem = new getAllBookResponse();
             responseItem.setId(book.getId());
