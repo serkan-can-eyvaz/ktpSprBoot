@@ -2,6 +2,7 @@ package com.example.staj1gun.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,4 +48,69 @@ public class Writer {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Entity
+    public class Author {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+
+        @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<Book> books = new ArrayList<>();
+
+        // Getters and setters
+    }
+
+    @Entity
+    public class Book {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String title;
+
+        @ManyToOne
+        @JoinColumn(name = "author_id")
+        private Author author;
+
+        // Getters and setters
+    }
+
+
+
+
 }
