@@ -17,6 +17,7 @@ public class Book
     @JoinColumn(name = "writerId")
     @JsonIgnore
     private Writer writer;
+    private String author;
 
     public Book(int id, String title, Writer writer, String writerName, String writerSurname) {
         this.id = id;
