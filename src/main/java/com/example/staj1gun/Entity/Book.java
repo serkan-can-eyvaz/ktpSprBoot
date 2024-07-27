@@ -16,31 +16,10 @@ public class Book
     @JoinColumn(name = "writerId")
     private Writer writer;
 
-    private String writerName;
-    private String writerSurname;
-
     public Book(int id, String title, Writer writer, String writerName, String writerSurname) {
         this.id = id;
         this.title = title;
         this.writer = writer;
-        this.writerName = writerName;
-        this.writerSurname = writerSurname;
-    }
-
-    public String getWriterName() {
-        return writerName;
-    }
-
-    public void setWriterName(String writerName) {
-        this.writerName = writerName;
-    }
-
-    public String getWriterSurname() {
-        return writerSurname;
-    }
-
-    public void setWriterSurname(String writerSurname) {
-        this.writerSurname = writerSurname;
     }
 
     public Book() {

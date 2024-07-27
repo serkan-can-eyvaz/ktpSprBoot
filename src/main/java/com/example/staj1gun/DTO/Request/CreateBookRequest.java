@@ -4,7 +4,7 @@ import com.example.staj1gun.Entity.Writer;
 
 public class CreateBookRequest
 {
-    private String title;
+    private String title;//null olmamalı
     private int writerId;
 
     public int getWriterId() {

@@ -44,7 +44,6 @@ public class BookService implements IBookService {
         Book book = new Book();
         book.setWriter(writer);
         book.setTitle(createBookRequest.getTitle());
-
         return bookRepository.save(book);
     }
 
@@ -69,7 +68,6 @@ public class BookService implements IBookService {
             }*/
             getAllBookResponse.add(responseItem);
         }
-
         return getAllBookResponse;
     }
 
@@ -77,23 +75,27 @@ public class BookService implements IBookService {
     public getByIdBookResponse  getById(int id) {
         return bookRepository.findById(id)
                 .map(book -> {
+                    Writer writer = book.getWriter();
                     getByIdBookResponse responseItem = new getByIdBookResponse();
                     responseItem.setId(book.getId());
                     responseItem.setTitle(book.getTitle());
-                    responseItem.setWriterName(book.getWriterName());
-                    responseItem.setWriterSurname(book.getWriterSurname());
+                    responseItem.setWriterName(writer.getName());
+                    responseItem.setWriterSurname(writer.getSurname());
                     return responseItem;
                 })
                 .orElseThrow(() -> new RuntimeException("Kitap bulunamadı"));
-        /*
-        Book book = bookRepository.findById(id).get();
+    }
+
+
+        /*Book book = bookRepository.findById(id).get();
+        Writer writer = book.getWriter();
         getByIdBookResponse responseItem = new getByIdBookResponse();
         responseItem.setId(book.getId());
         responseItem.setTitle(book.getTitle());
-        responseItem.setWriterName(book.getWriterName());
-        responseItem.setWriterSurname(book.getWriterSurname());
-        return responseItem;
-           */
-    }
+        responseItem.setWriterName(writer.getName());
+        responseItem.setWriterSurname(writer.getSurname());
+        return responseItem;*/
+
 
 }
+

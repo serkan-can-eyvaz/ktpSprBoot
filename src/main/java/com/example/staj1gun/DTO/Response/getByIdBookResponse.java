@@ -9,7 +9,6 @@ public class getByIdBookResponse {
     public getByIdBookResponse() {
     }
 
-
     public getByIdBookResponse(long id, String title, String writerName, String writerSurname) {
         this.id = id;
         this.title = title;

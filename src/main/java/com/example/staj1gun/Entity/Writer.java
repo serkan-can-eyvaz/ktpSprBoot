@@ -16,6 +16,14 @@ public class Writer {
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Book>books;
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     public Writer()
     {}
 
