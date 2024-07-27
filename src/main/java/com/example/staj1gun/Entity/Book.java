@@ -1,5 +1,6 @@
 package com.example.staj1gun.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class Book
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writerId")
+    @JsonIgnore
     private Writer writer;
 
     public Book(int id, String title, Writer writer, String writerName, String writerSurname) {
