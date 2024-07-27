@@ -7,10 +7,12 @@ import com.example.staj1gun.DTO.Response.WriterResponse;
 import com.example.staj1gun.DTO.Response.getAllWriterResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Entity.Writer;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class WriterService implements IWriterService {
 
@@ -44,24 +46,22 @@ public class WriterService implements IWriterService {
 
     @Override
     public List<WriterResponse> getById(int id) {
-        List<Writer> writers = writerRepository.findAll();
-        List<WriterResponse>  writerResponses = new ArrayList<>();
-        for (Writer writer : writers) {
-            WriterResponse responseItem = new WriterResponse();
-            responseItem.setName(writer.getName());
-            responseItem.setSurname(writer.getSurname());
+        List<WriterResponse> writerResponses = new ArrayList<>();
+        Writer writer = writerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Yazar bulunamadı, id: " + id));
 
-            List<BookResponse>bookResponses = new ArrayList<>();
-            for (Book book :writer.getBooks()) {
-                BookResponse bookResponse = new BookResponse();
-                book.setTitle(bookResponse.getTitle());
-                bookResponses.add(bookResponse);
-            }
-            responseItem.setBookResponses(bookResponses);
-            writerResponses.add(responseItem);
+        WriterResponse responseItem = new WriterResponse();
+        responseItem.setName(writer.getName());
+        responseItem.setSurname(writer.getSurname());
+
+        List<BookResponse> bookResponses = new ArrayList<>();
+        for (Book book : writer.getBooks()) {
+            BookResponse bookResponse = new BookResponse();
+            bookResponse.setTitle(book.getTitle());
+            bookResponses.add(bookResponse);
         }
+        responseItem.setBookResponses(bookResponses);
+        writerResponses.add(responseItem);
+
         return writerResponses;
     }
-
-
 }

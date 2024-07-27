@@ -22,22 +22,20 @@ public class WriterController {
 
     @GetMapping()
     public List<getAllWriterResponse> listeleme() {
-       return writerService.getAll();
+        return writerService.getAll();
     }
 
     @PostMapping()
     public Writer save(@RequestBody CreateWriterRequest createWriterRequest) {
         return writerService.create(createWriterRequest);
     }
-    @GetMapping("/{id}")
-    public List<WriterResponse> getwriter(@PathVariable int id) {
 
+    @GetMapping("/{id}")
+    public List<WriterResponse> getWriter(@PathVariable int id) {
         List<WriterResponse> writerResponses = writerService.getById(id);
         if (writerResponses.isEmpty()) {
             throw new EntityNotFoundException("Yazar bulunamadı, id: " + id);
         }
-
         return writerResponses;
     }
-
 }
