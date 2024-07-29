@@ -5,6 +5,7 @@ import com.example.staj1gun.DTO.Response.getAllBookResponse;
 import com.example.staj1gun.DTO.Response.getByIdBookResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Service.BookService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +35,10 @@ public class BookController {
     public getByIdBookResponse getBook(@PathVariable int id) {
         return bookService.getById(id);
     }
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable int id) {
+        bookService.deleteById(id);
+    }
+
 
 }

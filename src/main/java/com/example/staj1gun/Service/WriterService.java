@@ -76,9 +76,9 @@ public class WriterService implements IWriterService {
     }
 
     @Override
-    public Writer deleteById(int id) {
+    public void deleteById(int id) {
         Writer writer =writerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("author not found"+id) );
         writerRepository.delete(writer);
-        return null;
+
     }
 }

@@ -14,6 +14,6 @@ public interface IBookService {
     List<getAllBookResponse> getAll();
 
     getByIdBookResponse getById(int id);
-    Book deleteById(int id);
+    void deleteById(int id);
 
 }

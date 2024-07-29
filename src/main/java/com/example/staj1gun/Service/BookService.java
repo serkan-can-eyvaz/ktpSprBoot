@@ -33,14 +33,6 @@ public class BookService implements IBookService {
             throw new EntityNotFoundException("Writer not found with id: " + createBookRequest.getWriterId());
         }
         Writer writer = byId.get();
-        Optional<Book> existingBook = bookRepository.findByTitle(createBookRequest.getTitle());
-        if (existingBook.isPresent()) {
-            // Kitap zaten varsa, ve başka bir yazara atanmak isteniyorsa hata ver
-            Book book = existingBook.get();
-            if (!book.getWriter().equals(writer)) {
-                throw new IllegalStateException("Book with title '" + createBookRequest.getTitle() + "' is already associated with a different writer.");
-            }
-        }
         Book book = new Book();
         book.setWriter(writer);
         book.setTitle(createBookRequest.getTitle());
@@ -95,8 +87,9 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book deleteById(int id) {
-        return null;
+    public void deleteById(int id) {
+       Book book =bookRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Book not found with id: " + id));
+       bookRepository.delete(book);
     }
 
 
