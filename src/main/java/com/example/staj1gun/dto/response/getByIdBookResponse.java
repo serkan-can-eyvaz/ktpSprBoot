@@ -1,4 +1,4 @@
-package com.example.staj1gun.DTO.Response;
+package com.example.staj1gun.dto.response;
 
 public class getByIdBookResponse {
     private long id;
@@ -8,7 +8,7 @@ public class getByIdBookResponse {
 
     public getByIdBookResponse() {
     }
-
+    //entegrasyon ve birim testi nasıl yazılır
     public getByIdBookResponse(long id, String title, String writerName, String writerSurname) {
         this.id = id;
         this.title = title;

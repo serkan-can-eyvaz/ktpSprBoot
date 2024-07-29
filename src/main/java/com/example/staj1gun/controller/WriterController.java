@@ -1,8 +1,8 @@
-package com.example.staj1gun.Controller;
+package com.example.staj1gun.controller;
 
-import com.example.staj1gun.DTO.Request.CreateWriterRequest;
-import com.example.staj1gun.DTO.Response.WriterResponse;
-import com.example.staj1gun.DTO.Response.getAllWriterResponse;
+import com.example.staj1gun.dto.request.CreateWriterRequest;
+import com.example.staj1gun.dto.response.WriterResponse;
+import com.example.staj1gun.dto.response.getAllWriterResponse;
 import com.example.staj1gun.Entity.Writer;
 import com.example.staj1gun.Service.WriterService;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,10 +1,10 @@
 package com.example.staj1gun.Service;
 
-import com.example.staj1gun.DAO.WriterRepository;
-import com.example.staj1gun.DTO.Request.CreateWriterRequest;
-import com.example.staj1gun.DTO.Response.BookResponse;
-import com.example.staj1gun.DTO.Response.WriterResponse;
-import com.example.staj1gun.DTO.Response.getAllWriterResponse;
+import com.example.staj1gun.dao.WriterRepository;
+import com.example.staj1gun.dto.request.CreateWriterRequest;
+import com.example.staj1gun.dto.response.BookResponse;
+import com.example.staj1gun.dto.response.WriterResponse;
+import com.example.staj1gun.dto.response.getAllWriterResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,6 +44,7 @@ public class WriterService implements IWriterService {
 
         List<Book> books = new ArrayList<>();
         for (CreateWriterRequest.BookRequest bookRequest : createWriterRequest.getBooks()) {
+            writer.addBook(books);
             Book book = new Book();
             book.setTitle(bookRequest.getTitle());
             book.setWriter(writer);
@@ -58,7 +59,7 @@ public class WriterService implements IWriterService {
     public List<WriterResponse> getById(int id) {
         List<WriterResponse> writerResponses = new ArrayList<>();
         Writer writer = writerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Yazar bulunamadı, id: " + id));
-
+        //writerResponse dönüştürme dto mapping bak
         WriterResponse responseItem = new WriterResponse();
         responseItem.setName(writer.getName());
         responseItem.setSurname(writer.getSurname());
@@ -77,6 +78,7 @@ public class WriterService implements IWriterService {
 
     @Override
     public void deleteById(int id) {
+        //findbyId referansı getiren yöntemlere bak
         Writer writer =writerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("author not found"+id) );
         writerRepository.delete(writer);
 

@@ -1,4 +1,4 @@
-package com.example.staj1gun.DTO.Response;
+package com.example.staj1gun.dto.response;
 
 import java.util.List;
 

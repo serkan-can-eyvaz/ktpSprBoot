@@ -1,4 +1,4 @@
-package com.example.staj1gun.DTO.Request;
+package com.example.staj1gun.dto.request;
 
 public class BookRequest {
     private String title;

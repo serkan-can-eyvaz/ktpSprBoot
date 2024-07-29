@@ -1,4 +1,4 @@
-package com.example.staj1gun.DAO;
+package com.example.staj1gun.dao;
 
 import com.example.staj1gun.Entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,4 @@
-package com.example.staj1gun.DTO.Request;
-
-import com.example.staj1gun.Entity.Writer;
+package com.example.staj1gun.dto.request;
 
 public class CreateBookRequest
 {

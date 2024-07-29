@@ -1,10 +1,10 @@
 package com.example.staj1gun.Service;
 
-import com.example.staj1gun.DAO.BookRepository;
-import com.example.staj1gun.DAO.WriterRepository;
-import com.example.staj1gun.DTO.Request.CreateBookRequest;
-import com.example.staj1gun.DTO.Response.getAllBookResponse;
-import com.example.staj1gun.DTO.Response.getByIdBookResponse;
+import com.example.staj1gun.dao.BookRepository;
+import com.example.staj1gun.dao.WriterRepository;
+import com.example.staj1gun.dto.request.CreateBookRequest;
+import com.example.staj1gun.dto.response.getAllBookResponse;
+import com.example.staj1gun.dto.response.getByIdBookResponse;
 import com.example.staj1gun.Entity.Book;
 import com.example.staj1gun.Entity.Writer;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,4 +1,4 @@
-package com.example.staj1gun.DTO.Request;
+package com.example.staj1gun.dto.request;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class CreateWriterRequest {
     public void setBooks(List<BookRequest> books) {
         this.books = books;
     }
-
+    //gereksiz
     public static class BookRequest {
         private String title;
 

@@ -26,6 +26,12 @@ public class Writer {
         this.books = books;
     }
 
+    public void addBook(Book book) {
+        books.add(book);
+        book.setWriter(this);
+
+    }
+
     public Writer()
     {}
 
