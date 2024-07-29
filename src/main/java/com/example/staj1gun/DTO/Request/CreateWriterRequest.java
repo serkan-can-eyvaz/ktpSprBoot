@@ -1,17 +1,20 @@
 package com.example.staj1gun.DTO.Request;
 
-public class CreateWriterRequest
-{
+import java.util.List;
+
+public class CreateWriterRequest {
     private String name;
     private String surname;
+    private List<BookRequest> books;
 
-    public CreateWriterRequest() {
-    }
+    public CreateWriterRequest() {}
 
-    public CreateWriterRequest(String name, String surname) {
+    public CreateWriterRequest(String name, String surname, List<BookRequest> books) {
         this.name = name;
         this.surname = surname;
+        this.books = books;
     }
+
     public String getSurname() {
         return surname;
     }
@@ -26,5 +29,31 @@ public class CreateWriterRequest
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<BookRequest> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookRequest> books) {
+        this.books = books;
+    }
+
+    public static class BookRequest {
+        private String title;
+
+        public BookRequest() {}
+
+        public BookRequest(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 }

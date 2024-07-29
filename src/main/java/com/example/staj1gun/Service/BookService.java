@@ -84,9 +84,6 @@ public class BookService implements IBookService {
                     return responseItem;
                 })
                 .orElseThrow(() -> new RuntimeException("Kitap bulunamadı"));
-    }
-
-
         /*Book book = bookRepository.findById(id).get();
         Writer writer = book.getWriter();
         getByIdBookResponse responseItem = new getByIdBookResponse();
@@ -95,6 +92,15 @@ public class BookService implements IBookService {
         responseItem.setWriterName(writer.getName());
         responseItem.setWriterSurname(writer.getSurname());
         return responseItem;*/
+    }
+
+    @Override
+    public Book deleteById(int id) {
+        return null;
+    }
+
+
+
 
 
 }

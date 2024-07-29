@@ -12,4 +12,5 @@ public interface IWriterService {
     List<getAllWriterResponse> getAll();
     Writer create(CreateWriterRequest createWriterRequest);
     List<WriterResponse> getById(int id);
+    Writer deleteById(int id);
 }

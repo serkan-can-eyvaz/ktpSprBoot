@@ -41,6 +41,16 @@ public class WriterService implements IWriterService {
         Writer writer = new Writer();
         writer.setName(createWriterRequest.getName());
         writer.setSurname(createWriterRequest.getSurname());
+
+        List<Book> books = new ArrayList<>();
+        for (CreateWriterRequest.BookRequest bookRequest : createWriterRequest.getBooks()) {
+            Book book = new Book();
+            book.setTitle(bookRequest.getTitle());
+            book.setWriter(writer);
+            books.add(book);
+        }
+        writer.setBooks(books);
+
         return writerRepository.save(writer);
     }
 
@@ -63,5 +73,12 @@ public class WriterService implements IWriterService {
         writerResponses.add(responseItem);
 
         return writerResponses;
+    }
+
+    @Override
+    public Writer deleteById(int id) {
+        Writer writer =writerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("author not found"+id) );
+        writerRepository.delete(writer);
+        return null;
     }
 }
