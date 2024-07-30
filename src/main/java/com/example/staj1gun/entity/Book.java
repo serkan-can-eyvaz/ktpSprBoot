@@ -1,4 +1,4 @@
-package com.example.staj1gun.Entity;
+package com.example.staj1gun.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

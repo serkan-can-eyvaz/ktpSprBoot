@@ -3,8 +3,8 @@ package com.example.staj1gun.controller;
 import com.example.staj1gun.dto.request.CreateBookRequest;
 import com.example.staj1gun.dto.response.getAllBookResponse;
 import com.example.staj1gun.dto.response.getByIdBookResponse;
-import com.example.staj1gun.Entity.Book;
-import com.example.staj1gun.Service.BookService;
+import com.example.staj1gun.entity.Book;
+import com.example.staj1gun.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

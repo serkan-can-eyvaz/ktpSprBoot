@@ -1,12 +1,12 @@
-package com.example.staj1gun.Service;
+package com.example.staj1gun.service;
 
 import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateBookRequest;
 import com.example.staj1gun.dto.response.getAllBookResponse;
 import com.example.staj1gun.dto.response.getByIdBookResponse;
-import com.example.staj1gun.Entity.Book;
-import com.example.staj1gun.Entity.Writer;
+import com.example.staj1gun.entity.Book;
+import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

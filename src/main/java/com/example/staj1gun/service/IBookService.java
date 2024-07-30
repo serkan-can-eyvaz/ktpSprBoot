@@ -1,9 +1,9 @@
-package com.example.staj1gun.Service;
+package com.example.staj1gun.service;
 
 import com.example.staj1gun.dto.request.CreateBookRequest;
 import com.example.staj1gun.dto.response.getAllBookResponse;
 import com.example.staj1gun.dto.response.getByIdBookResponse;
-import com.example.staj1gun.Entity.Book;
+import com.example.staj1gun.entity.Book;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
-package com.example.staj1gun.Entity;
+package com.example.staj1gun.entity;
 
+import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -16,7 +17,7 @@ public class Writer {
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, fetch = FetchType.LAZY , orphanRemoval = true)
     @JsonManagedReference
-    List<Book>books;
+    List<Book>books = new ArrayList<>();
 
     public List<Book> getBooks() {
         return books;
@@ -30,6 +31,13 @@ public class Writer {
         books.add(book);
         book.setWriter(this);
 
+    }
+    public void addBooks(List<CreateWriterRequest.BookRequest> bookRequests) {
+        for (CreateWriterRequest.BookRequest bookRequest : bookRequests) {
+            Book book = new Book();
+            book.setTitle(bookRequest.getTitle());
+            this.addBook(book);
+        }
     }
 
     public Writer()

@@ -1,12 +1,13 @@
-package com.example.staj1gun.Service;
+package com.example.staj1gun.service;
 
 import com.example.staj1gun.dao.WriterRepository;
+import com.example.staj1gun.dto.mapper.WriterMapper;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.BookResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.dto.response.getAllWriterResponse;
-import com.example.staj1gun.Entity.Book;
-import com.example.staj1gun.Entity.Writer;
+import com.example.staj1gun.entity.Book;
+import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +26,7 @@ public class WriterService implements IWriterService {
     @Override
     public List<getAllWriterResponse> getAll() {
         List<Writer> writers = writerRepository.findAll();
-        List<getAllWriterResponse> brandresponses = new ArrayList<>();
-        for (Writer writer : writers) {
-            getAllWriterResponse responseItem = new getAllWriterResponse();
-            responseItem.setId(writer.getId());
-            responseItem.setName(writer.getName());
-            responseItem.setSurname(writer.getSurname());
-            brandresponses.add(responseItem);
-        }
-        return brandresponses;
+        return WriterMapper.toGetAllWriterResponseList(writers); // Mapper sınıfını kullanarak dönüştürme
     }
 
     @Override
@@ -41,22 +34,13 @@ public class WriterService implements IWriterService {
         Writer writer = new Writer();
         writer.setName(createWriterRequest.getName());
         writer.setSurname(createWriterRequest.getSurname());
-
-        List<Book> books = new ArrayList<>();
-        for (CreateWriterRequest.BookRequest bookRequest : createWriterRequest.getBooks()) {
-            writer.addBook(books);
-            Book book = new Book();
-            book.setTitle(bookRequest.getTitle());
-            book.setWriter(writer);
-            books.add(book);
-        }
-        writer.setBooks(books);
-
+        writer.addBooks(createWriterRequest.getBooks());
         return writerRepository.save(writer);
     }
 
+
     @Override
-    public List<WriterResponse> getById(int id) {
+    public List<WriterResponse> getById(int id) {//mapper sınıfına dahil edilmedi business requirements olduğundan service oluşturuldu
         List<WriterResponse> writerResponses = new ArrayList<>();
         Writer writer = writerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Yazar bulunamadı, id: " + id));
         //writerResponse dönüştürme dto mapping bak

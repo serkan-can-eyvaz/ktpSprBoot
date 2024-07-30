@@ -1,6 +1,6 @@
 package com.example.staj1gun.dao;
 
-import com.example.staj1gun.Entity.Book;
+import com.example.staj1gun.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

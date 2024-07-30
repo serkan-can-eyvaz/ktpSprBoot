@@ -1,9 +1,9 @@
-package com.example.staj1gun.Service;
+package com.example.staj1gun.service;
 
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.dto.response.getAllWriterResponse;
-import com.example.staj1gun.Entity.Writer;
+import com.example.staj1gun.entity.Writer;
 
 import java.util.List;
 
