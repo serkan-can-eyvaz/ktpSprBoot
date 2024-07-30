@@ -40,10 +40,10 @@ public class WriterService implements IWriterService {
 
 
     @Override
-    public List<WriterResponse> getById(int id) {//mapper sınıfına dahil edilmedi business requirements olduğundan service oluşturuldu
-        List<WriterResponse> writerResponses = new ArrayList<>();
-        Writer writer = writerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Yazar bulunamadı, id: " + id));
-        //writerResponse dönüştürme dto mapping bak
+    public List<WriterResponse> getById(int id) {
+        // Proxy nesne döner.
+        Writer writer = writerRepository.getReferenceById(id);//tek öğe döneceği zaman kullanılır.
+
         WriterResponse responseItem = new WriterResponse();
         responseItem.setName(writer.getName());
         responseItem.setSurname(writer.getSurname());
@@ -55,9 +55,8 @@ public class WriterService implements IWriterService {
             bookResponses.add(bookResponse);
         }
         responseItem.setBookResponses(bookResponses);
-        writerResponses.add(responseItem);
 
-        return writerResponses;
+        return List.of(responseItem); // Single item listesi döndürdük.
     }
 
     @Override

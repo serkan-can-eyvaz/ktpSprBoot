@@ -19,6 +19,9 @@ public class Writer {
     @JsonManagedReference
     List<Book>books = new ArrayList<>();
 
+    public Writer()
+    {}
+
     public List<Book> getBooks() {
         return books;
     }
@@ -40,8 +43,6 @@ public class Writer {
         }
     }
 
-    public Writer()
-    {}
 
     public Writer(int id, String name, String surname) {
         this.id = id;
