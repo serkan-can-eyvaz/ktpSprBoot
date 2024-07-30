@@ -23,7 +23,7 @@ public class BookMapper {
             response.setWriterName(writer.getName());
             response.setWriterSurname(writer.getSurname());
         } else {
-            response.setWriterName("Bilinmiyor");
+            response.setWriterName("Unknown");
             response.setWriterSurname("");
         }
         return response;
@@ -38,7 +38,7 @@ public class BookMapper {
             response.setWriterName(writer.getName());
             response.setWriterSurname(writer.getSurname());
         } else {
-            response.setWriterName("Bilinmiyor");
+            response.setWriterName("Unknown");
             response.setWriterSurname("");
         }
         return response;

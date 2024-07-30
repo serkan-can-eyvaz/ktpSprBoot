@@ -35,6 +35,7 @@ public class Writer {
         book.setWriter(this);
 
     }
+    //gereksiz
     public void addBooks(List<CreateWriterRequest.BookRequest> bookRequests) {
         for (CreateWriterRequest.BookRequest bookRequest : bookRequests) {
             Book book = new Book();

@@ -20,6 +20,7 @@ import java.util.List;
         }
 
         private static List<BookResponse> toBookResponseList(List<Book> books) {
+            //stream
             List<BookResponse> bookResponses = new ArrayList<>();
             for (Book book : books) {
                 BookResponse bookResponse = new BookResponse();
