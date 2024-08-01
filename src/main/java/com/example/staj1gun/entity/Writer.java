@@ -14,6 +14,7 @@ public class Writer {
     private int id;
     private String name;
     private String surname;
+    private String email;
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, fetch = FetchType.LAZY , orphanRemoval = true)
     @JsonManagedReference
