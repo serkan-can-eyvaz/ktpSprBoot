@@ -36,10 +36,10 @@ public class Writer {
 
     }
     //gereksiz
-    public void addBooks(List<CreateWriterRequest.BookRequest> bookRequests) {
-        for (CreateWriterRequest.BookRequest bookRequest : bookRequests) {
+    public void addBooks(List<String> bookTitles) {
+        for (String title : bookTitles) {
             Book book = new Book();
-            book.setTitle(bookRequest.getTitle());
+            book.setTitle(title);
             this.addBook(book);
         }
     }

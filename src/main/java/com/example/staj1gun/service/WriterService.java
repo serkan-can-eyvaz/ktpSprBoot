@@ -34,7 +34,15 @@ public class WriterService implements IWriterService {
         Writer writer = new Writer();
         writer.setName(createWriterRequest.getName());
         writer.setSurname(createWriterRequest.getSurname());
-        writer.addBooks(createWriterRequest.getBooks());
+
+        // BookRequest listesini Book title listesine dönüştür
+        List<String> bookTitles = new ArrayList<>();
+        for (CreateWriterRequest.BookRequest bookRequest : createWriterRequest.getBooks()) {
+            bookTitles.add(bookRequest.getTitle());
+        }
+
+        // Dönüştürülmüş bookTitles listesini writer'a ekle
+        writer.addBooks(bookTitles);
         return writerRepository.save(writer);
     }
 
