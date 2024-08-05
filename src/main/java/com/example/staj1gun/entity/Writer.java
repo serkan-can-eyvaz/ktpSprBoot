@@ -1,6 +1,5 @@
 package com.example.staj1gun.entity;
 
-import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -35,7 +34,7 @@ public class Writer {
         book.setWriter(this);
 
     }
-    //gereksiz
+
     public void addBooks(List<String> bookTitles) {
         for (String title : bookTitles) {
             Book book = new Book();
