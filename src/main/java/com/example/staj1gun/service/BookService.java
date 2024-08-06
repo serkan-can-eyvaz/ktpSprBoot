@@ -4,8 +4,8 @@ import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.mapper.BookMapper;
 import com.example.staj1gun.dto.request.CreateBookRequest;
-import com.example.staj1gun.dto.response.getAllBookResponse;
-import com.example.staj1gun.dto.response.getByIdBookResponse;
+import com.example.staj1gun.dto.response.GetAllBookResponse;
+import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
@@ -40,7 +40,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<getAllBookResponse> getAll() {
+    public List<GetAllBookResponse> getAll() {
         List<Book> books = bookRepository.findAll();
         return books.stream()
                 .map(bookMapper::toGetAllBookResponse)
@@ -48,7 +48,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public getByIdBookResponse getById(int id) {
+    public GetByIdBookResponse getById(int id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Kitap bulunamadı, id: " + id));
         return bookMapper.toGetByIdBookResponse(book);

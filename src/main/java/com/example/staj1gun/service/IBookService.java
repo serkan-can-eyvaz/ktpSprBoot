@@ -1,8 +1,8 @@
 package com.example.staj1gun.service;
 
 import com.example.staj1gun.dto.request.CreateBookRequest;
-import com.example.staj1gun.dto.response.getAllBookResponse;
-import com.example.staj1gun.dto.response.getByIdBookResponse;
+import com.example.staj1gun.dto.response.GetAllBookResponse;
+import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 
 import java.util.List;
@@ -11,9 +11,9 @@ public interface IBookService {
 
     Book create(CreateBookRequest createBookRequest);
 
-    List<getAllBookResponse> getAll();
+    List<GetAllBookResponse> getAll();
 
-    getByIdBookResponse getById(int id);
+    GetByIdBookResponse getById(int id);
     void deleteById(int id);
 
 }

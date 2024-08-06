@@ -1,8 +1,8 @@
 package com.example.staj1gun.controller;
 
 import com.example.staj1gun.dto.request.CreateBookRequest;
-import com.example.staj1gun.dto.response.getAllBookResponse;
-import com.example.staj1gun.dto.response.getByIdBookResponse;
+import com.example.staj1gun.dto.response.GetAllBookResponse;
+import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.service.BookService;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class BookController {
     }
 
     @GetMapping()
-    public List<getAllBookResponse> getAll() {
+    public List<GetAllBookResponse> getAll() {
         return bookService.getAll();
     }
 
@@ -31,7 +31,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public getByIdBookResponse getBook(@PathVariable int id) {
+    public GetByIdBookResponse getBook(@PathVariable int id) {
         return bookService.getById(id);
     }
     @DeleteMapping("/{id}")

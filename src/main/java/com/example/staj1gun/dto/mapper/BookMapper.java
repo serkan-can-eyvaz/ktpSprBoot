@@ -1,7 +1,7 @@
 package com.example.staj1gun.dto.mapper;
 import com.example.staj1gun.dto.request.CreateBookRequest;
-import com.example.staj1gun.dto.response.getAllBookResponse;
-import com.example.staj1gun.dto.response.getByIdBookResponse;
+import com.example.staj1gun.dto.response.GetAllBookResponse;
+import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,8 @@ public class BookMapper {
         return book;
     }
 
-    public getAllBookResponse toGetAllBookResponse(Book book) {
-        getAllBookResponse response = new getAllBookResponse();
+    public GetAllBookResponse toGetAllBookResponse(Book book) {
+        GetAllBookResponse response = new GetAllBookResponse();
         response.setId(book.getId());
         response.setTitle(book.getTitle());
         Writer writer = book.getWriter();
@@ -29,8 +29,8 @@ public class BookMapper {
         return response;
     }
 
-    public getByIdBookResponse toGetByIdBookResponse(Book book) {
-        getByIdBookResponse response = new getByIdBookResponse();
+    public GetByIdBookResponse toGetByIdBookResponse(Book book) {
+        GetByIdBookResponse response = new GetByIdBookResponse();
         response.setId(book.getId());
         response.setTitle(book.getTitle());
         Writer writer = book.getWriter();

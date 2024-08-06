@@ -2,7 +2,7 @@ package com.example.staj1gun.controller;
 
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.WriterResponse;
-import com.example.staj1gun.dto.response.getAllWriterResponse;
+import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Writer;
 import com.example.staj1gun.service.WriterService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +22,7 @@ public class WriterController {
     }
 
     @GetMapping()
-    public List<getAllWriterResponse> listeleme() {
+    public List<GetAllWriterResponse> listeleme() {
         return writerService.getAll();
     }
 

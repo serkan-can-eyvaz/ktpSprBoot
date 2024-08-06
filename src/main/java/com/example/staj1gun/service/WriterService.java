@@ -5,7 +5,7 @@ import com.example.staj1gun.dto.mapper.WriterMapper;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.BookResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
-import com.example.staj1gun.dto.response.getAllWriterResponse;
+import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,7 +24,7 @@ public class WriterService implements IWriterService {
     }
 
     @Override
-    public List<getAllWriterResponse> getAll() {
+    public List<GetAllWriterResponse> getAll() {
         List<Writer> writers = writerRepository.findAll();
         return WriterMapper.toGetAllWriterResponseList(writers); // Mapper sınıfını kullanarak dönüştürme
     }

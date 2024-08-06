@@ -2,7 +2,7 @@ package com.example.staj1gun.dto.mapper;
 
 import com.example.staj1gun.dto.response.BookResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
-import com.example.staj1gun.dto.response.getAllWriterResponse;
+import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 
@@ -38,16 +38,16 @@ import java.util.List;
             return writerResponses;
         }
 
-        public static getAllWriterResponse toGetAllWriterResponse(Writer writer) {
-            getAllWriterResponse response = new getAllWriterResponse();
+        public static GetAllWriterResponse toGetAllWriterResponse(Writer writer) {
+            GetAllWriterResponse response = new GetAllWriterResponse();
             response.setId(writer.getId());
             response.setName(writer.getName());
             response.setSurname(writer.getSurname());
             return response;
         }
 
-        public static List<getAllWriterResponse> toGetAllWriterResponseList(List<Writer> writers) {
-            List<getAllWriterResponse> responses = new ArrayList<>();
+        public static List<GetAllWriterResponse> toGetAllWriterResponseList(List<Writer> writers) {
+            List<GetAllWriterResponse> responses = new ArrayList<>();
             for (Writer writer : writers) {
                 responses.add(toGetAllWriterResponse(writer));
             }

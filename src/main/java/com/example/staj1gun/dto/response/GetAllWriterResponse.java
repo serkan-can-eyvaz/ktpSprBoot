@@ -1,16 +1,16 @@
 package com.example.staj1gun.dto.response;
 
-public class getAllWriterResponse {
+public class GetAllWriterResponse {
 
     private long id;
     private String name;
     private  String surname;
 
 
-    public getAllWriterResponse() {
+    public GetAllWriterResponse() {
     }
 
-    public getAllWriterResponse(long id, String name, String surname) {
+    public GetAllWriterResponse(long id, String name, String surname) {
         this.id = id;
         this.name = name;
         this.surname = surname;
