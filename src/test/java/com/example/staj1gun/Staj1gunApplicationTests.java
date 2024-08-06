@@ -8,6 +8,7 @@ class Staj1gunApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("merhaba");
 	}
 
 }
