@@ -18,7 +18,7 @@ public class Book
     @JsonIgnore
     private Writer writer;
 
-    public Book(int id, String title, Writer writer, String writerName, String writerSurname) {
+    public Book(int id, String title, Writer writer) {
         this.id = id;
         this.title = title;
         this.writer = writer;

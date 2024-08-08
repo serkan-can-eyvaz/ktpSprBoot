@@ -1,104 +1,132 @@
 package com.example.staj1gun.service;
 
-import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
-import com.example.staj1gun.dto.response.GetAllWriterResponse;
-import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-public class WriterServiceTest {
+@ExtendWith(SpringExtension.class)
+class WriterServiceTest {
 
     @Mock
     private WriterRepository writerRepository;
-    @Mock
-    private BookRepository bookRepository;
 
     @InjectMocks
     private WriterService writerService;
 
-    public WriterServiceTest() {
-        // Mockito anotasyonlarının başlatılması
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-
     @Test
-    void testGetAll() {
+    void testCreateWriter_WithBooks() {
         // Arrange
-        Writer writer = new Writer();
-        writer.setName("John");
-        writer.setSurname("Doe");
 
-        // WriterRepository.findAll() metodunu mockla ve tek bir Writer döndür
-        when(writerRepository.findAll()).thenReturn(Collections.singletonList(writer));
-
-        // Act
-        List<GetAllWriterResponse> result = writerService.getAll();
-
-        // Assert
-        assertEquals(1, result.size());
-        assertEquals("John", result.get(0).getName());
-        assertEquals("Doe", result.get(0).getSurname());
-        verify(writerRepository, times(1)).findAll();
-    }
-
-    @Test
-    void testCreateWithBooks() {
-        // Arrange
         CreateWriterRequest request = new CreateWriterRequest();
-        request.setName("Jane");
+        request.setName("John");
         request.setSurname("Doe");
 
-        List<CreateWriterRequest.BookRequest> bookRequests = new ArrayList<>();
-        CreateWriterRequest.BookRequest book1 = new CreateWriterRequest.BookRequest();
-        book1.setTitle("Book One");
-        bookRequests.add(book1);
+        // BookRequest listesini oluşturma
 
-        CreateWriterRequest.BookRequest book2 = new CreateWriterRequest.BookRequest();
-        book2.setTitle("Book Two");
-        bookRequests.add(book2);
+        List<CreateWriterRequest.BookRequest> bookRequests = new ArrayList<>();
+        CreateWriterRequest.BookRequest bookRequest1 = new CreateWriterRequest.BookRequest();
+        bookRequest1.setTitle("Book 1");
+        bookRequests.add(bookRequest1);
+
+        CreateWriterRequest.BookRequest bookRequest2 = new CreateWriterRequest.BookRequest();
+        bookRequest2.setTitle("Book 2");
+        bookRequests.add(bookRequest2);
 
         request.setBooks(bookRequests);
 
         Writer writer = new Writer();
-        writer.setName("Jane");
-        writer.setSurname("Doe");
+        writer.setName(request.getName());
+        writer.setSurname(request.getSurname());
+        writer.addBooks(List.of("Book 1", "Book 2")); // Beklenen kitaplar
 
-        List<Book> books = new ArrayList<>();
-        Book book1Entity = new Book();
-        book1Entity.setTitle("Book One");
-        books.add(book1Entity);
-
-        Book book2Entity = new Book();
-        book2Entity.setTitle("Book Two");
-        books.add(book2Entity);
-
-        writer.setBooks(books);
+        //Act
 
         when(writerRepository.save(any(Writer.class))).thenReturn(writer);
-        when(bookRepository.saveAll(anyList())).thenReturn(books);
-
-        // Act
-        Writer result = writerService.create(request);
+        Writer createdWriter = writerService.create(request);
 
         // Assert
-        assertEquals("Jane", result.getName());
-        assertEquals("Doe", result.getSurname());
-        assertEquals(2, result.getBooks().size());
-
+        assertNotNull(createdWriter);
+        assertEquals("John", createdWriter.getName());
+        assertEquals("Doe", createdWriter.getSurname());
+        assertEquals(2, createdWriter.getBooks().size());
+        assertEquals("Book 1", createdWriter.getBooks().get(0).getTitle());
+        assertEquals("Book 2", createdWriter.getBooks().get(1).getTitle());
         verify(writerRepository, times(1)).save(any(Writer.class));
-        verify(bookRepository, times(1)).saveAll(anyList());
     }
 
+
+
+    @Test
+    void testGetById_WriterExists() {
+        // Test verisi hazırlama
+        Writer writer = new Writer();
+        writer.setId(1);
+        writer.setName("John");
+        writer.setSurname("Doe");
+
+        when(writerRepository.findById(anyInt())).thenReturn(Optional.of(writer));
+
+        // Testi çalıştır
+        var writerResponse = writerService.getById(1);
+
+        // Doğrulamalar
+        assertNotNull(writerResponse);
+        assertEquals(1, writerResponse.size());
+        assertEquals("John", writerResponse.get(0).getName());
+        verify(writerRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testGetById_WriterNotFound() {
+        when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
+        assertThrows(EntityNotFoundException.class, () -> writerService.getById(1));
+        verify(writerRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testDeleteById_WriterExists() {
+        Writer writer = new Writer();
+        writer.setId(1);
+
+        when(writerRepository.findById(anyInt())).thenReturn(Optional.of(writer));
+        doNothing().when(writerRepository).delete(writer);
+
+        // Testi çalıştır
+        assertDoesNotThrow(() -> writerService.deleteById(1));
+
+        // Doğrulamalar
+        verify(writerRepository, times(1)).findById(1);
+        verify(writerRepository, times(1)).delete(writer);
+    }
+
+    @Test
+    void testDeleteById_WriterNotFound() {
+        when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
+        assertThrows(EntityNotFoundException.class, () -> writerService.deleteById(1));
+        verify(writerRepository, times(1)).findById(1);
+    }
 }

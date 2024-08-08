@@ -39,7 +39,8 @@ public class Writer {
         for (String title : bookTitles) {
             Book book = new Book();
             book.setTitle(title);
-            this.addBook(book);
+            book.setWriter(this); // Writer nesnesini bu kitapla ilişkilendiriyoruz
+            this.books.add(book); // Kitapları listeye ekliyoruz
         }
     }
 
