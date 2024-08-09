@@ -18,13 +18,14 @@ public class Book
     @JsonIgnore
     private Writer writer;
 
+
+    public Book() {
+    }
+
     public Book(int id, String title, Writer writer) {
         this.id = id;
         this.title = title;
         this.writer = writer;
-    }
-
-    public Book() {
     }
 
     public Writer getWriter() {

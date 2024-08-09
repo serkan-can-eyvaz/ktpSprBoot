@@ -2,6 +2,9 @@ package com.example.staj1gun.service;
 
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
+import com.example.staj1gun.dto.response.BookResponse;
+import com.example.staj1gun.dto.response.WriterResponse;
+import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
 import org.aspectj.lang.annotation.Before;
@@ -64,11 +67,7 @@ class WriterServiceTest {
 
         // Act
         Writer createdWriter = writerService.create(request);
-        /*
-        System.out.println("Writer to save: " + writer);
-        System.out.println("Saved writer: " + writerRepository.save(writer));
-        System.out.println("Created writer: " + createdWriter);
-        */
+
         // Assert
         assertNotNull(createdWriter, "Created writer should not be null");
         assertEquals("John", createdWriter.getName());
@@ -80,6 +79,53 @@ class WriterServiceTest {
         verify(writerRepository, times(1)).save(any(Writer.class));
     }
 
+    @Test
+    void testGetById_WriterExists() {
+        // Arrange
+        Writer writer = new Writer();
+        writer.setId(1);
+        writer.setName("John");
+        writer.setSurname("Doe");
+
+        // Kitapları ekleyin
+        Book book1 = new Book();
+        book1.setTitle("Book 1");
+        Book book2 = new Book();
+        book2.setTitle("Book 2");
+        writer.setBooks(List.of(book1, book2));
+
+        // Mocklama
+        when(writerRepository.findById(1)).thenReturn(Optional.of(writer));
+
+        // Act
+        List<WriterResponse> writerResponses = writerService.getById(1);
+
+        // Assert
+        assertNotNull(writerResponses, "WriterResponses should not be null");
+        assertEquals(1, writerResponses.size(), "WriterResponses list should have one item");
+
+        WriterResponse response = writerResponses.get(0);
+        assertEquals("John", response.getName(), "Writer name should be John");
+        assertEquals("Doe", response.getSurname(), "Writer surname should be Doe");
+
+        List<BookResponse> books = response.getBookResponses();
+        assertNotNull(books, "Books should not be null");
+        assertEquals(2, books.size(), "Books list should have two items");
+        assertEquals("Book 1", books.get(0).getTitle(), "First book title should be Book 1");
+        assertEquals("Book 2", books.get(1).getTitle(), "Second book title should be Book 2");
+
+        verify(writerRepository, times(1)).findById(1);
+    }
+
+
+    @Test
+    void testGetById_WriterNotFound() {
+        when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
+        assertThrows(EntityNotFoundException.class, () -> writerService.getById(1));
+        verify(writerRepository, times(1)).findById(1);
+    }
 
     @Test
     void testDeleteById_WriterExists() {

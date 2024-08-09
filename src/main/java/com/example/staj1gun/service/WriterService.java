@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WriterService implements IWriterService {
@@ -50,8 +51,11 @@ public class WriterService implements IWriterService {
 
     @Override
     public List<WriterResponse> getById(int id) {
-        // Proxy nesne döner.
-        Writer writer = writerRepository.getReferenceById(id);//tek öğe döneceği zaman kullanılır.
+        Optional<Writer> optionalWriter = writerRepository.findById(id);
+        if (optionalWriter.isEmpty()) {
+            throw new EntityNotFoundException("Writer not found with id: " + id);
+        }
+        Writer writer = optionalWriter.get(); // writer nesnesini burada almak
 
         WriterResponse responseItem = new WriterResponse();
         responseItem.setName(writer.getName());

@@ -44,7 +44,6 @@ public class Writer {
         }
     }
 
-
     public Writer(int id, String name, String surname) {
         this.id = id;
         this.name = name;
