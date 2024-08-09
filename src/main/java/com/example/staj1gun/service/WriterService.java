@@ -9,6 +9,7 @@ import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class WriterService implements IWriterService {
 
     private final WriterRepository writerRepository;
 
+    @Autowired
     public WriterService(WriterRepository writerRepository) {
         this.writerRepository = writerRepository;
     }
@@ -43,14 +45,8 @@ public class WriterService implements IWriterService {
         writer.addBooks(bookTitles);
         Writer savedWriter = writerRepository.save(writer);
 
-        // Debugging point: Check the value of savedWriter
-        System.out.println("Saved Writer inside create method: " + savedWriter);
-
         return savedWriter;
     }
-
-
-
 
     @Override
     public List<WriterResponse> getById(int id) {

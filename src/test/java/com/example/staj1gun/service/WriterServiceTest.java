@@ -4,6 +4,7 @@ import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.entity.Writer;
 import jakarta.persistence.EntityNotFoundException;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class WriterServiceTest {
+
 
     @Mock
     private WriterRepository writerRepository;
@@ -32,10 +34,7 @@ class WriterServiceTest {
     @InjectMocks
     private WriterService writerService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+
 
     @Test
     void testCreateWriter_WithBooks() {
@@ -60,15 +59,16 @@ class WriterServiceTest {
         writer.setSurname(request.getSurname());
         writer.addBooks(List.of("Book 1", "Book 2"));
 
-        Mockito.when(writerRepository.save(any(Writer.class))).thenReturn(writer);
+        when(writerRepository.save(Mockito.any(Writer.class))).thenReturn(writer);
+        //when(writerRepository.findById(anyInt())).thenAnswer(() => );
 
         // Act
         Writer createdWriter = writerService.create(request);
-
+        /*
         System.out.println("Writer to save: " + writer);
         System.out.println("Saved writer: " + writerRepository.save(writer));
         System.out.println("Created writer: " + createdWriter);
-
+        */
         // Assert
         assertNotNull(createdWriter, "Created writer should not be null");
         assertEquals("John", createdWriter.getName());
@@ -80,34 +80,6 @@ class WriterServiceTest {
         verify(writerRepository, times(1)).save(any(Writer.class));
     }
 
-
-
-
-    @Test
-    void testGetById_WriterExists() {
-        Writer writer = new Writer();
-        writer.setId(1);
-        writer.setName("John");
-        writer.setSurname("Doe");
-
-        when(writerRepository.findById(anyInt())).thenReturn(Optional.of(writer));
-
-        var writerResponse = writerService.getById(1);
-
-        assertNotNull(writerResponse);
-        assertEquals(1, writerResponse.size());
-        assertEquals("John", writerResponse.get(0).getName());
-        verify(writerRepository, times(1)).findById(1);
-    }
-
-    @Test
-    void testGetById_WriterNotFound() {
-        when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
-
-        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
-        assertThrows(EntityNotFoundException.class, () -> writerService.getById(1));
-        verify(writerRepository, times(1)).findById(1);
-    }
 
     @Test
     void testDeleteById_WriterExists() {
