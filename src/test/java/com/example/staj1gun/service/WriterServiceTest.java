@@ -30,14 +30,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class WriterServiceTest {
 
-
     @Mock
     private WriterRepository writerRepository;
 
     @InjectMocks
     private WriterService writerService;
-
-
 
     @Test
     void testCreateWriter_WithBooks() {
@@ -116,7 +113,6 @@ class WriterServiceTest {
 
         verify(writerRepository, times(1)).findById(1);
     }
-
 
     @Test
     void testGetById_WriterNotFound() {
