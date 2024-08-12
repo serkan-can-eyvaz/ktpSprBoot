@@ -1,4 +1,4 @@
-package com.example.staj1gun.service;
+package com.example.staj1gun.unitTest.service;
 import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.mapper.BookMapper;
@@ -129,6 +129,83 @@ public class BookServiceTest {
         assertEquals("Book 2", responses.get(1).getTitle());
 
         verify(bookRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetById_BookExists() {
+        // Arrange
+        Writer writer = new Writer();
+        writer.setId(1);
+        writer.setName("John");
+        writer.setSurname("Doe");
+
+        Book book = new Book();
+        book.setId(1);
+        book.setTitle("Sample Book");
+        book.setWriter(writer);
+
+        GetByIdBookResponse response = new GetByIdBookResponse();
+        response.setTitle("Sample Book");
+        response.setWriterName("John");
+        response.setWriterSurname("Doe");
+
+        when(bookRepository.findById(1)).thenReturn(Optional.of(book));
+        when(bookMapper.toGetByIdBookResponse(book)).thenReturn(response);
+
+        // Act
+        GetByIdBookResponse result = bookService.getById(1);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("Sample Book", result.getTitle());
+        assertEquals("John", result.getWriterName());
+        assertEquals("Doe", result.getWriterSurname());
+
+        verify(bookRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testGetById_BookNotFound() {
+        // Arrange
+        when(bookRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            bookService.getById(1);
+        });
+
+        assertEquals("Kitap bulunamadı, id: 1", exception.getMessage());
+        verify(bookRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testDeleteById_BookExists() {
+        // Arrange
+        Book book = new Book();
+        book.setId(1);
+        when(bookRepository.findById(1)).thenReturn(Optional.of(book));
+
+        // Act
+        bookService.deleteById(1);
+
+        // Assert
+        verify(bookRepository, times(1)).findById(1);
+        verify(bookRepository, times(1)).delete(book);
+    }
+
+    @Test
+    void testDeleteById_BookNotFound() {
+        // Arrange
+        when(bookRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            bookService.deleteById(1);
+        });
+
+        assertEquals("Kitap bulunamadı, id: 1", exception.getMessage());
+        verify(bookRepository, times(1)).findById(1);
+        verify(bookRepository, never()).delete(any(Book.class));
     }
 
 

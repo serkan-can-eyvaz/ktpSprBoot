@@ -1,4 +1,4 @@
-package com.example.staj1gun.service;
+package com.example.staj1gun.unitTest.service;
 
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
@@ -6,6 +6,7 @@ import com.example.staj1gun.dto.response.BookResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.service.WriterService;
 import jakarta.persistence.EntityNotFoundException;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
