@@ -1,11 +1,12 @@
 package com.example.staj1gun.dto.request;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateWriterRequest {
     private String name;
     private String surname;
-    private List<BookRequest> books;
+    private List<BookRequest> books = new ArrayList<BookRequest>();
 
     public CreateWriterRequest() {}
 
