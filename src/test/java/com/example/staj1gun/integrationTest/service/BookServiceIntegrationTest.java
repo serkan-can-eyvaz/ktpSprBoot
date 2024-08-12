@@ -34,19 +34,27 @@ public class BookServiceIntegrationTest {
     private BookRepository bookRepository;
 
     @BeforeEach
-    void setUp() {
-        // Test verilerini oluşturabilirsiniz
+
+    void setUp() { // Test verilerini
+        bookRepository.deleteAll();
+        writerRepository.deleteAll();
+
         Writer writer = new Writer();
         writer.setName("John");
         writer.setSurname("Doe");
         writerRepository.save(writer);
+
+        Book book = new Book();
+        book.setTitle("Sample Book");
+        book.setWriter(writer);
+        bookRepository.save(book);
     }
 
     @Test
     void testCreate_Success() {
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Sample Book");
-        createBookRequest.setWriterId(1); // Test verinizin ID'sini burada kullanın
+        createBookRequest.setWriterId(1); // Test verinisin ID'si
 
         Book createdBook = bookService.create(createBookRequest);
 
@@ -57,13 +65,19 @@ public class BookServiceIntegrationTest {
 
     @Test
     void testGetAll_Success() {
+        //arrange
+        setUp();
+
+        //act
         List<GetAllBookResponse> getAllBookResponses = bookService.getAll();
-        assertFalse(getAllBookResponses.isEmpty());
+
+        //assert
+        assertFalse(getAllBookResponses.isEmpty(), "The list of writers should not be empty");
+        assertEquals(1, getAllBookResponses.size(), "There should be 2 writers in the list");
     }
 
     @Test
     void testGetById_Success() {
-        // Önce kitap oluşturup ID'sini alın
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Sample Book");
         createBookRequest.setWriterId(1);
