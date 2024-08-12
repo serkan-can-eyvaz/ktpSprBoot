@@ -1,4 +1,4 @@
-package com.example.staj1gun.service;
+package com.example.staj1gun.integrationTest.service;
 
 import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
@@ -7,6 +7,7 @@ import com.example.staj1gun.dto.response.GetAllBookResponse;
 import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

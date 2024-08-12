@@ -1,16 +1,14 @@
-package com.example.staj1gun.service;
+package com.example.staj1gun.integrationTest.service;
 
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
-import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.service.WriterService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -33,6 +29,19 @@ public class WriterServiceIntegrationTest {
 
     @Autowired
     private WriterRepository writerRepository;
+    @BeforeEach
+    void setUp() {// Veritabanına örnek veri ekleme
+        writerRepository.deleteAll();
+        Writer writer1 = new Writer();
+        writer1.setName("John");
+        writer1.setSurname("Doe");
+        writerRepository.save(writer1);
+
+        Writer writer2 = new Writer();
+        writer2.setName("Jane");
+        writer2.setSurname("Doe");
+        writerRepository.save(writer2);
+    }
 
     @Test
     void testCreateWriter_WithBooks() {
@@ -75,8 +84,15 @@ public class WriterServiceIntegrationTest {
 
     @Test
     void testGetAll_Success() {
+        // Arrange
+        setUp(); // Verileri ekle
+
+        // Act
         List<GetAllWriterResponse> writers = writerService.getAll();
-        assertFalse(writers.isEmpty());
+
+        // Assert
+        assertFalse(writers.isEmpty(), "The list of writers should not be empty");
+        assertEquals(2, writers.size(), "There should be 2 writers in the list");
     }
 
     @Test
