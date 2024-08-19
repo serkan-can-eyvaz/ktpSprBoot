@@ -7,7 +7,11 @@ import com.example.staj1gun.entity.Writer;
 import org.springframework.stereotype.Component;
 @Component
 public class BookMapper {
+
     public Book toBook(CreateBookRequest createBookRequest, Writer writer) {
+        if (createBookRequest == null || writer == null) {
+            return null; // Null dönerse, hatayı bu noktada bulabilirsiniz
+        }
         Book book = new Book();
         book.setTitle(createBookRequest.getTitle());
         book.setWriter(writer);

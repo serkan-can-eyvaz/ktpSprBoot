@@ -36,6 +36,7 @@ public class BookService implements IBookService {
         }
         Writer writer = writerOptional.get();
         Book book = bookMapper.toBook(createBookRequest, writer);
+        System.out.println("Mapped Book: " + book); // Bu satır ile mapped book'u gözlemleyin
         return bookRepository.save(book);
     }
 

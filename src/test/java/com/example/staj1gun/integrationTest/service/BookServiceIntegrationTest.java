@@ -34,7 +34,6 @@ public class BookServiceIntegrationTest {
     private BookRepository bookRepository;
 
     @BeforeEach
-
     void setUp() { // Test verilerini
         bookRepository.deleteAll();
         writerRepository.deleteAll();
@@ -53,7 +52,7 @@ public class BookServiceIntegrationTest {
     @Test
     void testCreate_Success() {
         CreateBookRequest createBookRequest = new CreateBookRequest();
-        createBookRequest.setTitle("Sample Book");
+        createBookRequest.setTitle("new Sample Book");
         createBookRequest.setWriterId(1); // Test verinisin ID'si
 
         Book createdBook = bookService.create(createBookRequest);
@@ -65,9 +64,6 @@ public class BookServiceIntegrationTest {
 
     @Test
     void testGetAll_Success() {
-        //arrange
-        setUp();
-
         //act
         List<GetAllBookResponse> getAllBookResponses = bookService.getAll();
 

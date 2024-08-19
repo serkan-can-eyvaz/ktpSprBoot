@@ -1,4 +1,5 @@
 package com.example.staj1gun.unitTest.service;
+
 import com.example.staj1gun.dao.BookRepository;
 import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.mapper.BookMapper;
@@ -14,10 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,19 +32,20 @@ public class BookServiceTest {
     @Mock
     private WriterRepository writerRepository;
 
-    @Mock
-    private BookMapper bookMapper;
 
     @InjectMocks
     private BookService bookService;
 
+    private BookMapper bookMapper;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        bookMapper = new BookMapper(); // BookMapper'ı manuel olarak oluşturuyoruz
+        bookService = new BookService(bookRepository, writerRepository, bookMapper);
     }
 
     @Test
-    void testCreate_Success() {
+    void create_Success() {
         // Arrange
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Sample Book");
@@ -59,8 +61,10 @@ public class BookServiceTest {
         book.setWriter(writer);
 
         when(writerRepository.findById(1)).thenReturn(Optional.of(writer));
-        when(bookMapper.toBook(createBookRequest, writer)).thenReturn(book);
-        when(bookRepository.save(book)).thenReturn(book);
+
+        //mapper sınıfını mocklamadan onu da test et
+        //when(bookMapper.toBook(createBookRequest, writer)).thenReturn(book);
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
 
         // Act
         Book createdBook = bookService.create(createBookRequest);
@@ -150,7 +154,6 @@ public class BookServiceTest {
         response.setWriterSurname("Doe");
 
         when(bookRepository.findById(1)).thenReturn(Optional.of(book));
-        when(bookMapper.toGetByIdBookResponse(book)).thenReturn(response);
 
         // Act
         GetByIdBookResponse result = bookService.getById(1);
