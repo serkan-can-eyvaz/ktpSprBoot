@@ -34,14 +34,15 @@ public class BookServiceIntegrationTest {
     private BookRepository bookRepository;
 
     @BeforeEach
-    void setUp() { // Test verilerini
+    void setUp() {
+        // Test verilerini
         bookRepository.deleteAll();
         writerRepository.deleteAll();
 
         Writer writer = new Writer();
         writer.setName("John");
         writer.setSurname("Doe");
-        writerRepository.save(writer);
+        writer = writerRepository.save(writer);
 
         Book book = new Book();
         book.setTitle("Sample Book");
@@ -50,51 +51,56 @@ public class BookServiceIntegrationTest {
     }
 
     @Test
-    void testCreate_Success() {
+    void Create_Success() {
         CreateBookRequest createBookRequest = new CreateBookRequest();
-        createBookRequest.setTitle("new Sample Book");
-        createBookRequest.setWriterId(1); // Test verinisin ID'si
+        createBookRequest.setTitle("New Sample Book");
+        createBookRequest.setWriterId(1); // Test verisinin ID'si
 
         Book createdBook = bookService.create(createBookRequest);
 
         assertNotNull(createdBook);
-        assertEquals("Sample Book", createdBook.getTitle());
+        assertEquals("New Sample Book", createdBook.getTitle());
         assertEquals(1, createdBook.getWriter().getId());
+        assertNotNull(createdBook.getId(), "Book ID should not be null after creation");
+        assertTrue(createdBook.getTitle().length() > 0, "Book title should not be empty");
+        assertNotNull(createdBook.getWriter(), "Book writer should not be null");
     }
 
     @Test
-    void testGetAll_Success() {
-        //act
+    void GetAll_Success() {
         List<GetAllBookResponse> getAllBookResponses = bookService.getAll();
 
-        //assert
-        assertFalse(getAllBookResponses.isEmpty(), "The list of writers should not be empty");
-        assertEquals(1, getAllBookResponses.size(), "There should be 2 writers in the list");
+        assertFalse(getAllBookResponses.isEmpty(), "The list of books should not be empty");
+        assertEquals(1, getAllBookResponses.size(), "There should be 1 book in the list");
+
+        GetAllBookResponse response = getAllBookResponses.get(0);
+        assertNotNull(response.getTitle(), "Book title should not be null");
     }
 
     @Test
-    void testGetById_Success() {
+    void GetById_Success() {
         CreateBookRequest createBookRequest = new CreateBookRequest();
-        createBookRequest.setTitle("Sample Book");
+        createBookRequest.setTitle("Another Sample Book");
         createBookRequest.setWriterId(1);
         Book createdBook = bookService.create(createBookRequest);
 
         GetByIdBookResponse getByIdBookResponse = bookService.getById(createdBook.getId());
 
-        assertNotNull(getByIdBookResponse);
-        assertEquals("Sample Book", getByIdBookResponse.getTitle());
+        assertNotNull(getByIdBookResponse, "Book response should not be null");
+        assertEquals("Another Sample Book", getByIdBookResponse.getTitle(), "Book title should match");
+        assertNotNull(getByIdBookResponse.getId(), "Book ID should not be null");
     }
 
     @Test
-    void testDeleteById_Success() {
-        // Önce kitap oluşturup ID'sini alın
+    void DeleteById_Success() {
         CreateBookRequest createBookRequest = new CreateBookRequest();
-        createBookRequest.setTitle("Sample Book");
+        createBookRequest.setTitle("Book to Delete");
         createBookRequest.setWriterId(1);
         Book createdBook = bookService.create(createBookRequest);
 
         bookService.deleteById(createdBook.getId());
 
-        assertThrows(RuntimeException.class, () -> bookService.getById(createdBook.getId()));
+        assertThrows(RuntimeException.class, () -> bookService.getById(createdBook.getId()), "Fetching deleted book should throw an exception");
+        assertTrue(bookRepository.findById(createdBook.getId()).isEmpty(), "Deleted book should not be found in the repository");
     }
 }

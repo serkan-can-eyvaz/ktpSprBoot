@@ -120,9 +120,6 @@ public class BookServiceTest {
         GetAllBookResponse response2 = new GetAllBookResponse();
         response2.setTitle("Book 2");
 
-        when(bookMapper.toGetAllBookResponse(book1)).thenReturn(response1);
-        when(bookMapper.toGetAllBookResponse(book2)).thenReturn(response2);
-
         // Act
         List<GetAllBookResponse> responses = bookService.getAll();
 

@@ -38,7 +38,7 @@ class WriterServiceTest {
     private WriterService writerService;
 
     @Test
-    void testCreateWriter_WithBooks() {
+    void CreateWriter_WithBooks() {
         // Arrange
         CreateWriterRequest request = new CreateWriterRequest();
         request.setName("John");
@@ -78,7 +78,7 @@ class WriterServiceTest {
     }
 
     @Test
-    void testGetById_WriterExists() {
+    void GetById_WriterExists() {
         // Arrange
         Writer writer = new Writer();
         writer.setId(1);
@@ -116,7 +116,7 @@ class WriterServiceTest {
     }
 
     @Test
-    void testGetById_WriterNotFound() {
+    void GetById_WriterNotFound() {
         when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
@@ -125,7 +125,7 @@ class WriterServiceTest {
     }
 
     @Test
-    void testDeleteById_WriterExists() {
+    void DeleteById_WriterExists() {
         Writer writer = new Writer();
         writer.setId(1);
 
@@ -141,7 +141,7 @@ class WriterServiceTest {
     }
 
     @Test
-    void testDeleteById_WriterNotFound() {
+    void DeleteById_WriterNotFound() {
         when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Testin bir EntityNotFoundException fırlatmasını bekliyoruz

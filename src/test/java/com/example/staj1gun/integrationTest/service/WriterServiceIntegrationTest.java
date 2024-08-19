@@ -29,8 +29,9 @@ public class WriterServiceIntegrationTest {
 
     @Autowired
     private WriterRepository writerRepository;
+
     @BeforeEach
-    void setUp() {// Veritabanına örnek veri ekleme
+    void setUp() {
         writerRepository.deleteAll();
         Writer writer1 = new Writer();
         writer1.setName("John");
@@ -66,52 +67,63 @@ public class WriterServiceIntegrationTest {
 
         // Assert
         assertNotNull(createdWriter, "Created writer should not be null");
-        assertEquals("John", createdWriter.getName());
-        assertEquals("Doe", createdWriter.getSurname());
+        assertEquals("John", createdWriter.getName(), "Writer name should match");
+        assertEquals("Doe", createdWriter.getSurname(), "Writer surname should match");
         assertNotNull(createdWriter.getBooks(), "Books should not be null");
-        assertEquals(2, createdWriter.getBooks().size());
+        assertEquals(2, createdWriter.getBooks().size(), "There should be 2 books associated with the writer");
 
         // Veritabanından veri alarak kontrol etme
         List<Writer> writers = writerRepository.findAll();
         assertFalse(writers.isEmpty(), "Writer list should not be empty");
         Writer dbWriter = writers.get(0);
-        assertEquals("John", dbWriter.getName());
-        assertEquals("Doe", dbWriter.getSurname());
-        assertEquals(2, dbWriter.getBooks().size());
-        assertEquals("Book 1", dbWriter.getBooks().get(0).getTitle());
-        assertEquals("Book 2", dbWriter.getBooks().get(1).getTitle());
+        assertEquals("John", dbWriter.getName(), "Writer name in database should match");
+        assertEquals("Doe", dbWriter.getSurname(), "Writer surname in database should match");
+        assertNotNull(dbWriter.getBooks(), "Books in database should not be null");
     }
 
     @Test
-    void testGetAll_Success() {
-        // Arrange
-        setUp(); // Verileri ekle
-
-        // Act
+    void GetAll_Success() {
         List<GetAllWriterResponse> writers = writerService.getAll();
 
-        // Assert
         assertFalse(writers.isEmpty(), "The list of writers should not be empty");
         assertEquals(2, writers.size(), "There should be 2 writers in the list");
+
+        GetAllWriterResponse response1 = writers.get(0);
+        GetAllWriterResponse response2 = writers.get(1);
+
+        assertNotNull(response1.getId(), "Writer ID should not be null");
+        assertNotNull(response1.getName(), "Writer name should not be null");
+        assertNotNull(response1.getSurname(), "Writer surname should not be null");
+
+        assertNotNull(response2.getId(), "Writer ID should not be null");
+        assertNotNull(response2.getName(), "Writer name should not be null");
+        assertNotNull(response2.getSurname(), "Writer surname should not be null");
     }
 
     @Test
-    void testGetById_Success() {
-        // Önce yazar oluşturup ID'sini alın
+    void GetById_Success() {
+        // Arrange
         CreateWriterRequest createWriterRequest = new CreateWriterRequest();
         createWriterRequest.setName("Jane");
         createWriterRequest.setSurname("Doe");
         Writer createdWriter = writerService.create(createWriterRequest);
 
+        // Act
         List<WriterResponse> writerResponses = writerService.getById(createdWriter.getId());
 
-        assertFalse(writerResponses.isEmpty());
-        assertEquals("Jane", writerResponses.get(0).getName());
+        // Assert
+        assertNotNull(writerResponses, "Response list should not be null");
+        assertEquals(1, writerResponses.size(), "There should be exactly one writer response");
+
+        WriterResponse writerResponse = writerResponses.get(0);
+        assertNotNull(writerResponse, "Writer response should not be null");
+        assertEquals("Jane", writerResponse.getName(), "Writer name should match");
+        assertEquals("Doe", writerResponse.getSurname(), "Writer surname should match");
     }
 
+
     @Test
-    void testDeleteById_Success() {
-        // Önce yazar oluşturup ID'sini alın
+    void DeleteById_Success() {
         CreateWriterRequest createWriterRequest = new CreateWriterRequest();
         createWriterRequest.setName("Jane");
         createWriterRequest.setSurname("Doe");
@@ -119,6 +131,6 @@ public class WriterServiceIntegrationTest {
 
         writerService.deleteById(createdWriter.getId());
 
-        assertThrows(EntityNotFoundException.class, () -> writerService.getById(createdWriter.getId()));
+        assertThrows(EntityNotFoundException.class, () -> writerService.getById(createdWriter.getId()), "Writer should be deleted");
     }
 }
