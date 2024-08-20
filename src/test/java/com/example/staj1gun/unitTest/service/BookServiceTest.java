@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -156,12 +155,13 @@ public class BookServiceTest {
         GetByIdBookResponse result = bookService.getById(1);
 
         // Assert
+        verify(bookRepository, times(1)).findById(1);
+
         assertNotNull(result);
         assertEquals("Sample Book", result.getTitle());
         assertEquals("John", result.getWriterName());
         assertEquals("Doe", result.getWriterSurname());
 
-        verify(bookRepository, times(1)).findById(1);
     }
 
     @Test

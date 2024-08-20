@@ -47,7 +47,8 @@ public class BookService implements IBookService {
                 .map(bookMapper::toGetAllBookResponse)
                 .collect(Collectors.toList());
     }
-
+    //daha mantıklı açıklayıcı cümlelerle isimlendirmeleri düzelt
+    //equals sınıfını araştır biraz daha detaylandırarak işlevselliğini artır
     @Override
     public GetByIdBookResponse getById(int id) {
         Book book = bookRepository.findById(id)
