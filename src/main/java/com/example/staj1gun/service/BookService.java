@@ -8,6 +8,8 @@ import com.example.staj1gun.dto.response.GetAllBookResponse;
 import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.BookNotFoundException;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +31,14 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book create(CreateBookRequest createBookRequest) {
+    public Book create(CreateBookRequest createBookRequest) throws WriterNotFoundException {
         Optional<Writer> writerOptional = writerRepository.findById(createBookRequest.getWriterId());
         if (!writerOptional.isPresent()) {
-            throw new EntityNotFoundException("Yazar bulunamadı, id: " + createBookRequest.getWriterId());
+            throw new WriterNotFoundException("Writer id not found: " + createBookRequest.getWriterId());
         }
         Writer writer = writerOptional.get();
         Book book = bookMapper.toBook(createBookRequest, writer);
-        System.out.println("Mapped Book: " + book); // Bu satır ile mapped book'u gözlemleyin
+        System.out.println("Mapped Book: " + book);
         return bookRepository.save(book);
     }
 
@@ -49,16 +51,16 @@ public class BookService implements IBookService {
     }
     //daha mantıklı açıklayıcı cümlelerle isimlendirmeleri düzelt
     @Override
-    public GetByIdBookResponse getById(int id) {
+    public GetByIdBookResponse getById(int id) throws BookNotFoundException {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kitap bulunamadı, id: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found" ));
         return bookMapper.toGetByIdBookResponse(book);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws BookNotFoundException {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Kitap bulunamadı, id: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found" ));
         bookRepository.delete(book);
     }
 }

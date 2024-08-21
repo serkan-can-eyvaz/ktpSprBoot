@@ -8,6 +8,8 @@ import com.example.staj1gun.dto.response.GetAllBookResponse;
 import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.BookNotFoundException;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import com.example.staj1gun.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +48,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void create_Success() {
+    void create_Success() throws WriterNotFoundException {
         // Arrange
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Sample Book");
@@ -88,11 +90,11 @@ public class BookServiceTest {
         when(writerRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act & Assert
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+        Exception exception = assertThrows(WriterNotFoundException.class, () -> {
             bookService.create(createBookRequest);
         });
 
-        assertEquals("Yazar bulunamadı, id: 1", exception.getMessage());
+        assertEquals("Writer id not found: 1", exception.getMessage());
         verify(writerRepository, times(1)).findById(1);
         verify(bookRepository, never()).save(any(Book.class));
     }
@@ -134,7 +136,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void GetById_BookExists() {
+    void GetById_BookExists() throws BookNotFoundException {
         // Arrange
         Writer writer = new Writer();
         writer.setId(1);
@@ -172,16 +174,16 @@ public class BookServiceTest {
         when(bookRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act & Assert
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(BookNotFoundException.class, () -> {
             bookService.getById(1);
         });
 
-        assertEquals("Kitap bulunamadı, id: 1", exception.getMessage());
+        assertEquals("Book not found", exception.getMessage());
         verify(bookRepository, times(1)).findById(1);
     }
 
     @Test
-    void DeleteById_BookExists() {
+    void DeleteById_BookExists() throws BookNotFoundException {
         // Arrange
         Book book = new Book();
         book.setId(1);
@@ -205,7 +207,7 @@ public class BookServiceTest {
             bookService.deleteById(1);
         });
 
-        assertEquals("Kitap bulunamadı, id: 1", exception.getMessage());
+        assertEquals("Book not found", exception.getMessage());
         verify(bookRepository, times(1)).findById(1);
         verify(bookRepository, never()).delete(any(Book.class));
     }

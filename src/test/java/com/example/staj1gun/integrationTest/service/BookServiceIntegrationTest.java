@@ -7,6 +7,8 @@ import com.example.staj1gun.dto.response.GetAllBookResponse;
 import com.example.staj1gun.dto.response.GetByIdBookResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.BookNotFoundException;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import com.example.staj1gun.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +53,7 @@ public class BookServiceIntegrationTest {
     }
 
     @Test
-    void Create_Success() {
+    void Create_Success() throws WriterNotFoundException {
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("New Sample Book");
         createBookRequest.setWriterId(1); // Test verisinin ID'si
@@ -78,7 +80,7 @@ public class BookServiceIntegrationTest {
     }
 
     @Test
-    void GetById_Success() {
+    void GetById_Success() throws WriterNotFoundException, BookNotFoundException {
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Another Sample Book");
         createBookRequest.setWriterId(1);
@@ -92,7 +94,7 @@ public class BookServiceIntegrationTest {
     }
 
     @Test
-    void DeleteById_Success() {
+    void DeleteById_Success() throws WriterNotFoundException, BookNotFoundException {
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setTitle("Book to Delete");
         createBookRequest.setWriterId(1);
@@ -100,7 +102,7 @@ public class BookServiceIntegrationTest {
 
         bookService.deleteById(createdBook.getId());
 
-        assertThrows(RuntimeException.class, () -> bookService.getById(createdBook.getId()), "Fetching deleted book should throw an exception");
+        assertThrows(BookNotFoundException.class, () -> bookService.getById(createdBook.getId()), "Fetching deleted book should throw an exception");
         assertTrue(bookRepository.findById(createdBook.getId()).isEmpty(), "Deleted book should not be found in the repository");
     }
 }

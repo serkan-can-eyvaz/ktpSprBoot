@@ -5,7 +5,7 @@ public class WriterNotFoundException extends Exception {
 
     //varsayılan contructor
     public WriterNotFoundException() {
-        super();
+        super("Writer not found");
     }
     //özel mesaj ile oluşturduğum constructor
     public WriterNotFoundException(String message) {
