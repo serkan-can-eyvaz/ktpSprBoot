@@ -6,19 +6,14 @@ import com.example.staj1gun.dto.response.BookResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import com.example.staj1gun.service.WriterService;
-import jakarta.persistence.EntityNotFoundException;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,14 +73,13 @@ class WriterServiceTest {
     }
 
     @Test
-    void GetById_WriterExists() {
+    void GetById_WriterExists() throws WriterNotFoundException {
         // Arrange
         Writer writer = new Writer();
         writer.setId(1);
         writer.setName("John");
         writer.setSurname("Doe");
 
-        // Kitapları ekleyin
         Book book1 = new Book();
         book1.setTitle("Book 1");
         Book book2 = new Book();
@@ -116,13 +110,14 @@ class WriterServiceTest {
     }
 
     @Test
-    void GetById_WriterNotFound() {
+    void GetById_WriterNotFound() throws  WriterNotFoundException {
         when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
-        assertThrows(EntityNotFoundException.class, () -> writerService.getById(1));
+        // Testin WriterNotFoundException fırlatmasını bekliyoruz
+        assertThrows(WriterNotFoundException.class, () -> writerService.getById(1),"Writer not found");
         verify(writerRepository, times(1)).findById(1);
     }
+
 
     @Test
     void DeleteById_WriterExists() {
@@ -132,20 +127,20 @@ class WriterServiceTest {
         when(writerRepository.findById(anyInt())).thenReturn(Optional.of(writer));
         doNothing().when(writerRepository).delete(writer);
 
-        // Testi çalıştır
         assertDoesNotThrow(() -> writerService.deleteById(1));
 
-        // Doğrulamalar
+
         verify(writerRepository, times(1)).findById(1);
         verify(writerRepository, times(1)).delete(writer);
     }
 
     @Test
-    void DeleteById_WriterNotFound() {
+    void DeleteById_WriterNotFound() throws WriterNotFoundException {
         when(writerRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        // Testin bir EntityNotFoundException fırlatmasını bekliyoruz
-        assertThrows(EntityNotFoundException.class, () -> writerService.deleteById(1));
+        // Testin WriterNotFoundException fırlatmasını için yeniden düzenlendi
+        assertThrows(WriterNotFoundException.class, () -> writerService.deleteById(1),"Writer not found");
         verify(writerRepository, times(1)).findById(1);
     }
+
 }

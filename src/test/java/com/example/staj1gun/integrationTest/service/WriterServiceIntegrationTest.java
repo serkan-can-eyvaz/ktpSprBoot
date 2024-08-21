@@ -5,8 +5,8 @@ import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import com.example.staj1gun.service.WriterService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +101,7 @@ public class WriterServiceIntegrationTest {
     }
 
     @Test
-    void GetById_Success() {
+    void GetById_Success() throws WriterNotFoundException {
         // Arrange
         CreateWriterRequest createWriterRequest = new CreateWriterRequest();
         createWriterRequest.setName("Jane");
@@ -121,16 +121,18 @@ public class WriterServiceIntegrationTest {
         assertEquals("Doe", writerResponse.getSurname(), "Writer surname should match");
     }
 
-
     @Test
-    void DeleteById_Success() {
+    void DeleteById_Success() throws WriterNotFoundException {
+        // Arrange
         CreateWriterRequest createWriterRequest = new CreateWriterRequest();
         createWriterRequest.setName("Jane");
         createWriterRequest.setSurname("Doe");
         Writer createdWriter = writerService.create(createWriterRequest);
 
+        // Act
         writerService.deleteById(createdWriter.getId());
 
-        assertThrows(EntityNotFoundException.class, () -> writerService.getById(createdWriter.getId()), "Writer should be deleted");
+        // Assert
+        assertThrows(WriterNotFoundException.class, () -> writerService.getById(createdWriter.getId()), "Writer should be deleted");
     }
 }

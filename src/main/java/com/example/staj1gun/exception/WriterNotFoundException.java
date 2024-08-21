@@ -1,5 +1,6 @@
 package com.example.staj1gun.exception;
 
+//checked dışında unchecked tercih ediliyor mu
 public class WriterNotFoundException extends Exception {
 
     //varsayılan contructor

@@ -8,7 +8,7 @@ import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Book;
 import com.example.staj1gun.entity.Writer;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.staj1gun.exception.WriterNotFoundException; // Yeni exception sınıfını ekliyoruz
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class WriterService implements IWriterService {
     @Override
     public List<GetAllWriterResponse> getAll() {
         List<Writer> writers = writerRepository.findAll();
-        return WriterMapper.toGetAllWriterResponseList(writers); // Mapper sınıfını kullanarak dönüştürme
+        return WriterMapper.toGetAllWriterResponseList(writers);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class WriterService implements IWriterService {
     }
 
     @Override
-    public List<WriterResponse> getById(int id) {
+    public List<WriterResponse> getById(int id) throws WriterNotFoundException {
         Optional<Writer> optionalWriter = writerRepository.findById(id);
         if (optionalWriter.isEmpty()) {
-            throw new EntityNotFoundException("Writer not found with id: " + id);
+            throw new WriterNotFoundException("Writer not found with id: " + id);
         }
-        Writer writer = optionalWriter.get(); // writer nesnesini burada almak
+        Writer writer = optionalWriter.get();
 
         WriterResponse responseItem = new WriterResponse();
         responseItem.setName(writer.getName());
@@ -69,14 +69,13 @@ public class WriterService implements IWriterService {
         }
         responseItem.setBookResponses(bookResponses);
 
-        return List.of(responseItem); // Single item listesi döndürdük.
+        return List.of(responseItem);
     }
 
     @Override
-    public void deleteById(int id) {
-        //findbyId referansı getiren yöntemlere bak
-        Writer writer =writerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("author not found"+id) );
+    public void deleteById(int id) throws WriterNotFoundException {
+        Writer writer = writerRepository.findById(id)
+                .orElseThrow(() -> new WriterNotFoundException("Writer not found with id: " + id));
         writerRepository.delete(writer);
-
     }
 }

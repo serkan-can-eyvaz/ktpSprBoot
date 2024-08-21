@@ -4,8 +4,9 @@ import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.dto.response.GetAllWriterResponse;
 import com.example.staj1gun.entity.Writer;
+import com.example.staj1gun.exception.WriterNotFoundException;
 import com.example.staj1gun.service.WriterService;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,16 +34,21 @@ public class WriterController {
     }
 
     @GetMapping("/{id}")
-    public List<WriterResponse> getWriter(@PathVariable int id) {
-        List<WriterResponse> writerResponses = writerService.getById(id);
-        if (writerResponses.isEmpty()) {
-            throw new EntityNotFoundException("Yazar bulunamadı, id: " + id);
+    public ResponseEntity<List<WriterResponse>> getWriter(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(writerService.getById(id));
+        } catch (WriterNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return writerResponses;
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<WriterResponse> deleteWriter(@PathVariable int id) {
-        writerService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteWriter(@PathVariable int id) {
+        try {
+            writerService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (WriterNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
