@@ -1,5 +1,6 @@
 package com.example.staj1gun.controller;
 
+import com.example.staj1gun.dao.WriterRepository;
 import com.example.staj1gun.dto.request.CreateWriterRequest;
 import com.example.staj1gun.dto.response.WriterResponse;
 import com.example.staj1gun.dto.response.GetAllWriterResponse;
@@ -11,15 +12,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/writers")
 public class WriterController {
 
     private final WriterService writerService;
+    private final WriterRepository writerRepository;
 
-    public WriterController(WriterService writerService) {
+    public WriterController(WriterService writerService, WriterRepository writerRepository) {
         this.writerService = writerService;
+        this.writerRepository = writerRepository;
     }
 
     @GetMapping()
@@ -33,22 +37,31 @@ public class WriterController {
         return ResponseEntity.ok(writer);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<WriterResponse>> getWriter(@PathVariable int id) {
-        try {
-            return ResponseEntity.ok(writerService.getById(id));
-        } catch (WriterNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<WriterResponse>> getWriter(@PathVariable int id) throws WriterNotFoundException {
+        Optional<Writer> writer = writerRepository.findById(id);
+        if (writer.isEmpty()) {
+            throw new WriterNotFoundException("Writer not found with id: " + id);
         }
+
+        // List<WriterResponse> döndüren metodu çağırıyoruz
+        List<WriterResponse> writerResponses = writerService.getById(id);
+
+        // Bu listeyi ResponseEntity içerisine sarıyoruz
+        return ResponseEntity.ok(writerResponses);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWriter(@PathVariable int id) {
-        try {
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteWriter(@PathVariable int id) throws WriterNotFoundException {
+
+        Optional<Writer> writer = writerRepository.findById(id);
+        if (writer.isEmpty()) {
+            throw new WriterNotFoundException("Writer not found with id: " + id);
+        }
             writerService.deleteById(id);
             return ResponseEntity.noContent().build();
-        } catch (WriterNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+
     }
+
 }

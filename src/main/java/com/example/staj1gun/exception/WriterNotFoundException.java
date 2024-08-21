@@ -1,11 +1,14 @@
 package com.example.staj1gun.exception;
 
-//checked dışında unchecked tercih ediliyor mu
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND,reason = "there is no such writer")
 public class WriterNotFoundException extends Exception {
 
     //varsayılan contructor
     public WriterNotFoundException() {
-        super("Writer not found");
+        super();
     }
     //özel mesaj ile oluşturduğum constructor
     public WriterNotFoundException(String message) {
@@ -18,5 +21,7 @@ public class WriterNotFoundException extends Exception {
     //Sadece cause ile oluşturduğum constructor
     public WriterNotFoundException(Throwable cause) {
         super(cause);
+    }
+    public WriterNotFoundException(int id) {
     }
 }
