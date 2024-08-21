@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class BookServiceTest {
 
     @Mock
     private WriterRepository writerRepository;
+
 
 
     @InjectMocks
@@ -78,7 +80,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testCreate_WriterNotFound() {
+    void Create_WriterNotFound() {
         // Arrange
         CreateBookRequest createBookRequest = new CreateBookRequest();
         createBookRequest.setWriterId(1);
@@ -96,7 +98,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testGetAll() {
+    void GetAll() {
         // Arrange
         Writer writer = new Writer();
         writer.setName("John");
@@ -132,7 +134,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testGetById_BookExists() {
+    void GetById_BookExists() {
         // Arrange
         Writer writer = new Writer();
         writer.setId(1);
@@ -165,7 +167,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testGetById_BookNotFound() {
+    void GetById_BookNotFound() {
         // Arrange
         when(bookRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -179,7 +181,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testDeleteById_BookExists() {
+    void DeleteById_BookExists() {
         // Arrange
         Book book = new Book();
         book.setId(1);
@@ -194,7 +196,7 @@ public class BookServiceTest {
     }
 
     @Test
-    void testDeleteById_BookNotFound() {
+    void DeleteById_BookNotFound() {
         // Arrange
         when(bookRepository.findById(1)).thenReturn(Optional.empty());
 
