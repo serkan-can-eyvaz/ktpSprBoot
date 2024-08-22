@@ -47,7 +47,7 @@ public class BookController {
         return bookService.getById(id);
 
     }
-    /*@RequestMapping(value="/orders/{id}", method=GET)
+    /*@RequestMapping(value="/orders/{id}", method=GET)//
     public String showOrder(@PathVariable("id") long id, Model model) {
         Order order = orderRepository.findOrderById(id);
 
